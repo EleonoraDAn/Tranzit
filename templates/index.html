@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="it-IT" xmlns = "http://www.w3.org/1999/xhtml">
+<head class="headerHome">
+    <meta
+            name="description"
+            content="A website for public transport in Italy.">
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="white"/>
+    <title>Tranzit</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="icon" href="/img/icona_tranzit.jpg" type="image/jpg">
+</head>
+<body style="background: url('/img/home_bg.jpg') no-repeat; background-size:cover;">
+        <ul class="navbar">
+            <li id="tranzit_navbar">Tran<span style="color: #52D976">Zit</span></li>
+            <li><a href="/Tranzit/templates/index.html" class="navbar_link">Treni</a></li>
+            <li><a href="#" class="navbar_link">Le mie prenotazioni</a></li>
+            <li><a href="/register.html" class="navbar_link">Registrati</a></li>
+            <li><a href="/login.html" class="navbar_link">Accedi</a></li>
+        </ul>
+
+        <div class="homeText">
+            <h5>Cerca il treno</h5>
+            <h1>al caso tuo!</h1>
+        </div>
+
+        <div class="datiForm">
+            <h2>Inserisci la stazione di partenza e di ritorno</h2>
+            <form id="viaggioForm" action="/Tranzit/static" method="post" enctype="multipart/form-data" target="_self">
+            <div id="partenzaControl">
+                <label for="partenza">
+                    <input type="text" name="partenza" id="partenza" required placeholder="Città o stazione di partenza">
+                </label>
+            </div>
+                <div id="destinazioneControl">
+                    <label for="destinazione">
+                    <input type="text" name="destinazione" id="destinazione" required placeholder="Città o stazione di arrivo">
+                    </label>
+                </div>
+
+                <div id="indirizzoControl">
+                <label for="andata">
+                    <input type="datetime-local" name="andata" id="andata" required placeholder="Data di andata">
+                </label>
+                </div>
+                    <!--
+                </div>
+                <div id="ritornoControl">
+                    <label for="ritorno">
+                    <input type="datetime-local" name="ritorno" id="ritorno" required placeholder="Data di ritorno">
+                    </label>
+                </div>
+        -->
+                <button type="submit" id="ottieniBiglietti">Cerca</button>
+            </form>
+        </div>
+        <script type="text/javascript" src="/js/main.js"></script>
+</body>
+</html>

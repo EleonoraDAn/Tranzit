@@ -1,0 +1,28 @@
+<!-- templates/results.html -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Risultati del Viaggio</title>
+</head>
+<body>
+<h1>Risultati del Viaggio</h1>
+
+{% if trains and not error %}
+<ul>
+  {% for train in trains %}
+  <li>
+    <p><strong>Treno:</strong> {{ train.train }}</p>
+    <p><strong>Orario:</strong> {{ train.time }}</p>
+    <p><strong>Dettagli:</strong> {{ train.details }}</p>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>{{ error }}</p>
+{% endif %}
+
+<a href="/Tranzit/static">Torna alla pagina di ricerca</a>
+</body>
+</html>
