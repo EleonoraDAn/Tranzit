@@ -46,10 +46,6 @@ def accedi():
 def registrati():
     return render_template("registrati.html")
 
-@app.route("/profiloUtente")
-def profilo_utente():
-    return render_template("profiloUtente.html")
-
 @app.route("/statusMobilita")
 def status_mobilita():
     return render_template("statusMobilita.html")
@@ -57,7 +53,6 @@ def status_mobilita():
 @app.route("/risultatiCodTreno")
 def risultati_cod_treno():
     return render_template("risultatiCodTreno.html")
-
 @app.route("/tabelloni")
 def tabelloni():
     return render_template("tabelloni.html")

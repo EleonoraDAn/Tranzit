@@ -440,3 +440,13 @@ input[type="date"] {
 .schedule-container {
     flex-direction: column;
 }
+
+.profiloUtente-container {
+    justify-content: left;
+    display: inline-flex;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 100px;
+    background-color: #467361;
+}
+
