@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>{% block title %}Tranzit{% endblock %}</title>
+</head>
+<body class="{% block body_class %}{% endblock %}">
+<header class="navbar-container">
+    <div class="logo">
+        <p><a href="/" style="text-decoration: none; color: white;">Tranzit</a></p>
+    </div>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="/chiSiamo">Chi siamo</a></li>
+            <li><a href="/tabelloni">Tabelloni</a></li>
+            <li><a href="/statusMobilita">Status mobilità</a></li>
+            <li><a href="#">Avvisi</a></li>
+            <li><a href="/accedi" class="accedi-btn">Accedi</a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>

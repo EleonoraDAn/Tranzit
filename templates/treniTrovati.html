@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<div class="maing">
+</div>
+
+<div class="tickets-container">
+    <h1>{{ from_stop }} -> {{ to_stop }}<br>{{ date }}</h1>
+    {% for ticket in tickets %}
+    <div class="ticket-card">
+        <div class="ticket-header">
+            <span class="tripName">{{ ticket.trip_short_name }}</span>
+        </div>
+        <div class="ticket-body">
+            <div class="info-viaggio">
+                <div class="orario-stazione">
+                    <p class="partenza">{{ ticket.arrival_time }}<br>{{ ticket.from_stop }}</p>
+                    <p class="destinazione">{{ ticket.departure_time }}<br>{{ ticket.to_stop }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="ticket-footer">
+            <a href="#" class="acquista-btn">Acquista</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
