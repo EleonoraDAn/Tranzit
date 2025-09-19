@@ -1,0 +1,16 @@
+{% extends 'sidebar.html' %}
+{% block title %}Account{% endblock %}
+
+{% block main_content %}
+<div class="modificaInfo">
+    <form method="post">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" value="{{ user.username }}">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" value="">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" value="{{ user.email }}">
+        <button type="submit">Salva</button>
+    </form>
+</div>
+{% endblock %}

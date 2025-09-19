@@ -53,6 +53,7 @@ def status_mobilita():
 @app.route("/risultatiCodTreno")
 def risultati_cod_treno():
     return render_template("risultatiCodTreno.html")
+
 @app.route("/tabelloni")
 def tabelloni():
     return render_template("tabelloni.html")
@@ -163,7 +164,7 @@ def accedi_utenti():
     if username and password:
         utente_esistente = utenti_collection.find_one({"username": username})
         if utente_esistente:
-            return redirect("/profiloUtente")
+            return redirect("/account")
     else:
         return redirect("/accedi")
 
@@ -218,7 +219,6 @@ def get_status_treno():
         })
 
     return render_template("risultatiCodTreno.html", schedule=train_schedule, codTreno=codTreno)
-
 
 if __name__ == "__main__":
     app.run(debug=True)

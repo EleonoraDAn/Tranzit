@@ -1,21 +1,16 @@
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <title>{% block title %}Side bar{% endblock %}</title>
-</head>
-<body>
-<div class="profiloUtente-container">
-    <ul>
-        <li><a href="#">Account</a></li>
-        <li><a href="#">I miei viaggi</a></li>
-        <li><a href="#">I miei metodi di pagamento</a></li>
-        <li><a href="/">Logout</a></li>
-    </ul>
+{% extends 'base.html' %}
+{% block content %}
+<div class="main-info">
+    <aside class="profiloUtente-container">
+            <ul>
+            <li><a href="/account">Account</a></li>
+            <li><a href="#">I miei viaggi</a></li>
+            <li><a href="#">I miei metodi di pagamento</a></li>
+            <li><a href="/">Logout</a></li>
+            </ul>
+    </aside>
 </div>
-<main>
-    {% block content %}{% endblock %}
-</main>
-</body>
-</html>
+<div class="main-content">
+    {% block main_content %}{% endblock %}
+</div>
+{% endblock %}

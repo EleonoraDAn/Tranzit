@@ -440,13 +440,57 @@ input[type="date"] {
 .schedule-container {
     flex-direction: column;
 }
-
+.main-info {
+    display: flex;
+    align-items: flex-start;
+}
 .profiloUtente-container {
     justify-content: left;
     display: inline-flex;
     border-radius: 15px;
-    padding: 20px;
+    padding: 20px 20px 50px 0;
     margin-top: 100px;
     background-color: #467361;
+
 }
 
+.profiloUtente-container a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 20px;
+    display: block;
+}
+.profiloUtente-container a:hover {
+    background-color: #6aab8a;
+    border-radius: 5px;
+}
+.profiloUtente-container a.active {
+    background-color: darkslategray;
+    border-radius: 5px;
+}
+
+.profiloUtente-container li {
+    list-style: none;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 40px;
+}
+
+.modificaInfo {
+    text-align: center;
+    display: inline-block;
+    justify-content: center;
+    background-color: #467361;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.modificaInfo form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
