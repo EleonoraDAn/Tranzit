@@ -4,24 +4,15 @@
 
 {% block content %}
 <div class="schedule-container">
-<h1>Stato del Treno {{ codTreno }}</h1>
-<table>
-    <thead>
-    <tr>
-        <th>Fermata</th>
-        <th>Orario di Arrivo</th>
-        <th>Orario di Partenza</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for fermata in schedule %}
-    <tr>
-        <td>{{ fermata.nome_fermata }}</td>
-        <td>{{ fermata.orario_arrivo }}</td>
-        <td>{{ fermata.orario_partenza }}</td>
-    </tr>
+<p>{{ codTreno }}</p>
+    <div class="schedule-body">
+        {% for fermata in schedule %}
+        <div class="schedule-row">
+        <div class="schedule-data">{{ fermata.nome_fermata }}</div>
+        <div class="schedule-data">{{ fermata.orario_arrivo }}</div>
+        <div class="schedule-data">{{ fermata.orario_partenza }}</div>
+    </div>
     {% endfor %}
-    </tbody>
-</table>
+</div>
 </div>
 {% endblock %}

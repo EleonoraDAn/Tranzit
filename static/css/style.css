@@ -494,3 +494,16 @@ input[type="date"] {
     flex-direction: column;
     gap: 15px;
 }
+
+.schedule-container {
+    font-family: "Times New Roman", Times, serif;
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #467361;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+}
+
+
