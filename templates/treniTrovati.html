@@ -11,7 +11,7 @@
     {% for ticket in tickets %}
     <div class="ticket-card">
         <div class="ticket-header">
-            <span class="tripName">{{ ticket.trip_short_name }}</span>
+            <span class="tripName">{{ ticket.trip_short_name }} {{ ticket.agency_id }}</span>
         </div>
         <div class="ticket-body">
             <div class="info-viaggio">

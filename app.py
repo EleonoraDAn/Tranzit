@@ -11,21 +11,13 @@ MONGO_URI = "mongodb+srv://Tranzit:fluEqkVVOzm3EGUK@cluster0.7dmohmv.mongodb.net
 client = MongoClient(MONGO_URI)
 db = client["Tranzit"]
 utenti_collection = db["utenti"]
-# Collections relative ai treni di "Trenord"
-routes_trenord_collection = db["routes_trenord"]
-trips_trenord_collection = db["trips_trenord"]
-stop_times_trenord_collection = db["stop_times_trenord"]
-stops_trenord_collection= db["stops_trenord"]
-agency_trenord_collection = db["agency_trenord"]
-calendar_dates_trenord_collection = db["calendar_dates_trenord"]
-feed_info_trenord_collection = db["feed_info_trenord"]
 # Collections relative ai treni e i bus di "Eav"
 routes_eav_collection = db["routes_eav"]
 trips_eav_collection = db["trips_eav"]
 stop_times_eav_collection = db["stop_times_eav"]
 stops_eav_collection= db["stops_eav"]
 agency_eav_collection = db["agency_eav"]
-calendar_dates_eav_collection = db["calendar_dates_trenord"]
+calendar_dates_eav_collection = db["calendar_dates_eav"]
 shapes_eav_collection = db["shapes_eav"]
 
 @app.route("/")
@@ -59,9 +51,6 @@ def tabelloni():
     return render_template("tabelloni.html")
 
 def get_stop_id_by_name(stop_name):
-    stop = stops_trenord_collection.find_one({"stop_name": stop_name})
-    if stop:
-        return stop["stop_id"]
     stop_eav = stops_eav_collection.find_one({"stop_name": stop_name})
     if stop_eav:
         return stop_eav["stop_id"]
@@ -87,18 +76,14 @@ def add_prenotazioni():
     if not from_id or not to_id:
         return f"Stazione non trovata: {from_name if not from_id else ''} {to_name if not to_id else ''}", 404
 
-    # Trova tutti i trip
-    trips_trenord = list(trips_trenord_collection.find({}, {"trip_id":1, "route_id":1, "service_id":1, "trip_short_name":1, "_id":0}))
-    trips_eav = list(trips_eav_collection.find({}, {"trip_id":1, "route_id":1, "service_id":1, "trip_short_name":1, "_id":0}))
-    all_trips = trips_trenord + trips_eav
+    # Trova tutti i trip EAV
+    all_trips = list(trips_eav_collection.find({}, {"trip_id": 1, "route_id": 1, "service_id": 1, "trip_short_name": 1, "_id": 0}))
 
-    # Prepara mapping trip_id -> calendar_dates collection
-    calendar_dates_map = {trip["trip_id"]: calendar_dates_trenord_collection for trip in trips_trenord}
-    calendar_dates_map.update({trip["trip_id"]: calendar_dates_eav_collection for trip in trips_eav})
+    # Carica tutti gli stop_times EAV
+    all_stop_times = list(stop_times_eav_collection.find({}, {"trip_id": 1, "stop_id": 1, "stop_sequence": 1, "departure_time": 1, "_id": 0}))
 
-    # Carica tutti gli stop_times
-    all_stop_times = list(stop_times_trenord_collection.find({}, {"trip_id":1, "stop_id":1, "stop_sequence":1, "departure_time":1, "_id":0}))
-    all_stop_times += list(stop_times_eav_collection.find({}, {"trip_id":1, "stop_id":1, "stop_sequence":1, "departure_time":1, "_id":0}))
+    all_routes = list(routes_eav_collection.find({}, {"route_id": 1, "agency_id": 1, "_id": 0}))
+    routes_map = {route["route_id"]: route for route in all_routes}
 
     # Organizza stop_times per trip
     stop_times_by_trip = {}
@@ -110,49 +95,43 @@ def add_prenotazioni():
     for trip in all_trips:
         trip_id = trip["trip_id"]
         service_id = trip["service_id"]
+        route_id = trip["route_id"]
         times = stop_times_by_trip.get(trip_id, [])
         stops_seq = {st["stop_id"]: st for st in times}
 
-        # Controlla che le stazioni siano presenti e nell'ordine corretto
+        route_info = routes_map.get(route_id)
+
         if from_id not in stops_seq or to_id not in stops_seq:
             continue
         if stops_seq[from_id]["stop_sequence"] >= stops_seq[to_id]["stop_sequence"]:
             continue
 
-        # Seleziona la collection giusta di calendar_dates
-        calendar_dates_coll = calendar_dates_map.get(trip_id)
+        # Verifica che il servizio sia attivo per la data richiesta
+        is_service_active = False
+        exception = calendar_dates_eav_collection.find_one({"service_id": service_id, "date": int(date_gtfs)})
+        if exception and exception["exception_type"] == 1:
+            is_service_active = True
 
-        # Controllo calendar_dates
-        exception = None
-        if calendar_dates_coll is not None:
-            exception = calendar_dates_coll.find_one({"service_id": service_id, "date": date_gtfs})
+        agency_long_name = ""
+        display_name = ""
+        if route_info:
+            agency_id = route_info.get("agency_id")
+            if agency_id == "NA0004":
+                agency_long_name = "TRENO"
+                display_name = trip.get("trip_short_name", trip_id)
+            elif agency_id == "EAVO":
+                agency_long_name = "BUS"
+                display_name = trip.get("route_short_name", trip_id)
 
-        if exception:
-            if exception["exception_type"] == 2:
-                continue  # servizio cancellato
-            # exception_type == 1 -> continua
-        else:
-            # Controlla calendar.txt corrispondente
-            service_coll = calendar_dates_trenord_collection if calendar_dates_coll == calendar_dates_trenord_collection else calendar_dates_eav_collection
-            service = None
-            if service_coll is not None:
-                service = service_coll.find_one({"service_id": service_id})
-            if service:
-                if not (service["start_date"] <= date_gtfs <= service["end_date"]):
-                    continue
-                weekday = date_obj.weekday()
-                weekdays_map = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
-                if service[weekdays_map[weekday]] != 1:
-                    continue
-
-
-        results.append({
-            "trip_short_name": int(trip["trip_short_name"]),
-            "from_stop": from_name,
-            "to_stop": to_name,
-            "arrival_time": stops_seq[from_id].get("arrival_time", stops_seq[from_id].get("departure_time", "")),
-            "departure_time": stops_seq[to_id]["departure_time"]
-        })
+        if is_service_active:
+            results.append({
+                "trip_short_name": int(display_name),
+                "agency_id": agency_long_name,
+                "from_stop": from_name,
+                "to_stop": to_name,
+                "arrival_time": stops_seq[from_id].get("arrival_time", stops_seq[from_id].get("departure_time", "")),
+                "departure_time": stops_seq[to_id]["departure_time"]
+            })
 
     return render_template("treniTrovati.html", tickets=results, from_stop=from_name, to_stop=to_name, date=trip_date)
 
