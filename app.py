@@ -34,6 +34,10 @@ def accedi():
     utenti = list(utenti_collection.find())
     return render_template("accedi.html", utenti=utenti)
 
+@app.route("/account")
+def account():
+    return render_template("account.html")
+
 @app.route("/registrati")
 def registrati():
     return render_template("registrati.html")

@@ -2,6 +2,7 @@ body, html {
     margin: 0;
     padding: 0;
     height: 100%;
+    overflow: hidden;
 }
 .background-container {
     background-image: url("/static/img/background-image.png");
@@ -101,7 +102,7 @@ h1.chiSiamo {
     font-size: 20px;
     letter-spacing: 0px;
     word-spacing: 3px;
-    color: #467361;
+    color: black;
     font-weight: 400;
     text-decoration: none;
     font-style: normal;
@@ -114,7 +115,7 @@ h2.chiSiamo {
     font-size: 18px;
     letter-spacing: 0px;
     word-spacing: 3px;
-    color: #467361;
+    color: black;
     font-weight: 400;
     text-decoration: none;
     font-style: italic;
@@ -128,7 +129,7 @@ p.chiSiamo {
     font-size: 16px;
     letter-spacing: 0px;
     word-spacing: 0.8px;
-    color: #467361;
+    color: black;
     font-weight: 400;
     text-decoration: none;
     font-style: normal;
@@ -463,6 +464,10 @@ input[type="date"] {
     padding: 20px 20px 50px 0;
     margin-top: 100px;
     background-color: #467361;
+    position: absolute;
+    height: 50%;
+    top: 100px;
+    left: 0;
 
 }
 
@@ -487,24 +492,37 @@ input[type="date"] {
     list-style: none;
 }
 
-.main-content {
-    flex-grow: 1;
-    padding: 40px;
-}
-
 .modificaInfo {
     text-align: center;
-    display: inline-block;
-    justify-content: center;
+    justify-content: space-between;
+    flex-direction: row;
     background-color: #467361;
     border-radius: 10px;
     padding: 20px;
+    position: absolute;
+    top: 300px;
+    left: 500px;
+    display: flex;
+    width: auto;
+    height: 10%;
 }
-
+.modificaInfo label {
+    margin-right: 5px;
+}
 .modificaInfo form {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    flex-direction: row;
+    gap: 20px;
+}
+.form-group {
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    font-size: 16px;
+    color: white;
+    gap: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .schedule-container {
