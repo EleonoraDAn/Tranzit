@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<div class="maing">
+</div>
+
+<div class="tickets-container">
+    <h1 style="color:white;">{{ from_stop }} >> {{ to_stop }}<br>{{ date }}</h1>
+    {% for ticket in tickets %}
+    <div class="ticket-card">
+        <div class="ticket-header">
+            <span class="tripName">{{ ticket.trip_short_name }} {{ ticket.agency_id }}</span>
+        </div>
+        <div class="ticket-body">
+            <div class="info-viaggio">
+                <div class="orario-stazione">
+                    <p class="partenza">{{ ticket.arrival_time }}<br>{{ ticket.from_stop }}</p>
+                    <p class="destinazione">{{ ticket.departure_time }}<br>{{ ticket.to_stop }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="ticket-footer">
+            <form action="/acquista_biglietto" method="post">
+                <input type="hidden" name="trip_short_name" value="{{ ticket.trip_short_name }}">
+                <input type="hidden" name="date" value="{{ date }}">
+                <input type="hidden" name="agency_id" value="{{ ticket.agency_id }}">
+                <input type="hidden" name="from_stop" value="{{ from_stop }}">
+                <input type="hidden" name="to_stop" value="{{ to_stop }}">
+                <input type="hidden" name="arrival_time" value="{{ ticket.arrival_time }}">
+                <input type="hidden" name="departure_time" value="{{ ticket.departure_time }}">
+                <button type="submit" class="acquista-btn">Acquista</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

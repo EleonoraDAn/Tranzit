@@ -1,0 +1,570 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: auto;
+}
+.background-container {
+    background-image: url("/static/img/background-img.png");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.navbar-container {
+    background-color: #6aab8a;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 10px 20px;
+    height: 60px;
+    width: 100%;
+}
+
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 70px;
+}
+
+
+.nav-links li {
+    padding: 0;
+}
+
+
+.nav-links li a {
+    font-family: Times New Roman, Times New Roman, serif;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease 0s;
+}
+
+.nav-links li a:hover {
+    text-decoration: underline;
+}
+
+.logo {
+    font-family: Times New Roman, Times New Roman, serif;
+    font-size: 25px;
+    font-weight: bold;
+}
+.accedi-btn {
+    padding: 9px 25px;
+    color: white;
+    background-color: #467361;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Impact , sans-serif;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease 0s;
+    justify-content: flex-end;
+}
+
+.accedi-btn:hover {
+    background-color: #e6ffe6;
+    color: black;
+}
+
+div.chiSiamo{
+    text-align: left;
+    width: 50%;
+    padding: 20px;
+    position: absolute;
+    margin: 0 auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+h1.chiSiamo {
+    font-family: Impact, Charcoal, sans-serif;
+    font-size: 20px;
+    letter-spacing: 0px;
+    word-spacing: 3px;
+    color: black;
+    font-weight: 400;
+    text-decoration: none;
+    font-style: normal;
+    font-variant: normal;
+    text-transform: none;
+}
+
+h2.chiSiamo {
+    font-family: Impact, Charcoal, sans-serif;
+    font-size: 18px;
+    letter-spacing: 0px;
+    word-spacing: 3px;
+    color: black;
+    font-weight: 400;
+    text-decoration: none;
+    font-style: italic;
+    font-variant: normal;
+    text-transform: none;
+    margin-bottom: 40px;
+}
+
+p.chiSiamo {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    letter-spacing: 0px;
+    word-spacing: 0.8px;
+    color: black;
+    font-weight: 400;
+    text-decoration: none;
+    font-style: normal;
+    font-variant: normal;
+    text-transform: none;
+    margin-bottom: 20px;
+}
+
+.tickets-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ticket-card {
+    width: 80%;
+    max-width: 600px;
+    padding: 20px;
+
+    text-align: center;
+    border: hidden;
+    background-color: #f2f2f2;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+.ticket-header {
+    text-align: left;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    font-size: 16px;
+
+}
+
+.partenza {
+    text-align: left;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 20px;
+}
+
+.destinazione {
+    text-align: right;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 20px;
+}
+
+.orario-stazione {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ticket-footer {
+    text-align: center;
+}
+
+.acquista-btn {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 16px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #6aab8a;
+    color: white;
+    background-color: #6aab8a;
+    border-radius: 10px;
+    padding: 15px;
+    text-decoration: none;
+}
+.acquista-btn:hover {
+    background-color: #467361;
+}
+
+
+.accedi-container {
+    text-align: center;
+    display: inline-block;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #467361;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.username-container {
+    margin: 20px;
+    font-family: "Times New Roman", Times, serif;
+    display: flex;
+    justify-content: space-between;
+}
+.password-container {
+    margin: 20px;
+    font-family: "Times New Roman", Times, serif;
+    display: flex;
+    justify-content: space-between;
+}
+
+.label-accedi{
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    font-size: 16px;
+    color: white;
+    margin-right: 10px;
+    padding-top: 2px;
+}
+#username {
+    border-radius: 15px;
+    border: none;
+    padding: 5px;
+}
+#password {
+    border-radius: 15px;
+    border: none;
+    padding: 5px;
+}
+#username::placeholder {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 15px;
+    text-align: center;
+}
+#password::placeholder {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 15px;
+    text-align: center;
+}
+#accediButton{
+    background-color: crimson;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 17px;
+    padding: 5px 30px 5px 30px;
+}
+#accediButton:hover {
+    background-color: darkred;
+}
+
+.accedi-footer {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 15px;
+    text-align: center;
+
+}
+#pAccedi {
+    color: white;
+    margin-bottom: 2px;
+    border: none;
+}
+#registratiLink {
+    color: white;
+    margin-top: 2px;
+    border: none;
+}
+
+.registrati-container {
+    text-align: center;
+    display: inline-block;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #467361;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.label-registrati{
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    font-size: 16px;
+    color: white;
+    margin-right: 10px;
+    padding-top: 2px;
+}
+
+#email {
+    border-radius: 15px;
+    border: none;
+    padding: 5px;
+    margin-left: 25px;
+}
+
+#email::placeholder {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 15px;
+    text-align: center;
+}
+
+#registratiBtn {
+    background-color: crimson;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 17px;
+    padding: 5px 30px 5px 30px;
+}
+
+#registratiBtn:hover {
+    background-color: darkred;
+}
+
+.biglietto-container {
+    text-align: center;
+    display: inline-block;
+    justify-content: center;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.label-viaggio {
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    font-size: 16px;
+    color: #467361;
+    margin-right: 10px;
+}
+
+#partenza {
+    border-radius: 15px;
+    border: none;
+    padding: 5px;
+    margin-left: 5px;
+    background-color: #467361;
+    color: white;
+}
+#partenza::placeholder {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 15px;
+    text-align: center;
+    color: white;
+}
+#destinazione {
+    border-radius: 15px;
+    border: none;
+    padding: 5px;
+    margin-left: 5px;
+    background-color: #467361;
+    color: white;
+}
+#destinazione::placeholder {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 15px;
+    text-align: center;
+    color: white;
+}
+input[type="date"] {
+    padding: 5px;
+    border: none;
+    border-radius: 15px;
+    font-size: 16px;
+    background-color: #467361;
+    color: white;
+    text-align: center;
+    font-family: "Times New Roman", Times, serif;
+}
+#cercaBiglietto {
+    background-color: #467361;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 17px;
+    padding: 5px 30px 5px 30px;
+}
+#cercaBiglietto:hover {
+    background-color: #6aab8a;
+}
+
+.form-item {
+    margin: 20px;
+    font-family: "Times New Roman", Times, serif;
+    display: flex;
+    justify-content: space-between;
+}
+
+.biglietto-header {
+    text-align: start;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    font-size: 16px;
+    color: #467361;
+}
+
+.box-codTreno {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+#inserisciCodTreno {
+    background-color: #467361;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 17px;
+    padding: 5px 30px 5px 30px;
+}
+
+#inserisciCodTreno:hover {
+    background-color: #6aab8a;
+}
+
+#codiceTreno {
+    border-radius: 15px;
+    border: none;
+    padding: 5px;
+    margin-left: 5px;
+    background-color: #467361;
+    color: white;
+}
+
+.schedule-container {
+    flex-direction: column;
+}
+.main-info {
+    display: flex;
+    align-items: flex-start;
+}
+.profiloUtente-container {
+    justify-content: left;
+    display: inline-flex;
+    border-radius: 15px;
+    padding: 20px 20px 50px 0;
+    margin-top: 100px;
+    background-color: #467361;
+    position: absolute;
+    height: 50%;
+    top: 100px;
+    left: 0;
+
+}
+
+.profiloUtente-container a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 20px;
+    display: block;
+}
+.profiloUtente-container a:hover {
+    background-color: #6aab8a;
+    border-radius: 5px;
+}
+.profiloUtente-container a.active {
+    background-color: darkslategray;
+    border-radius: 5px;
+}
+
+.profiloUtente-container li {
+    list-style: none;
+}
+
+.modificaInfo {
+    text-align: center;
+    justify-content: space-between;
+    flex-direction: row;
+    background-color: #467361;
+    border-radius: 10px;
+    padding: 20px;
+    position: absolute;
+    top: 300px;
+    left: 500px;
+    display: flex;
+    width: auto;
+    height: 10%;
+}
+.modificaInfo label {
+    margin-right: 5px;
+}
+.modificaInfo form {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+.form-group {
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    font-size: 16px;
+    color: white;
+    gap: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.schedule-container {
+    width: 100%;
+    max-width: 500px;
+    margin-top: 20px;
+    background-color: darkseagreen;
+    border-radius: 10px;
+    text-align: left;
+    color: white;
+    position: absolute;
+    left: 0;
+    top: 70px;
+    font-weight: bold;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 20px;
+}
+.schedule-row {
+    margin-bottom: 10px;
+    color: black;
+}
+
+#flash-messages-container {
+    position: absolute;
+    top: 100px;
+    left: 600px;
+    background-color: white;
+    color: black;
+    padding: 10px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#partenza-list {
+    background-color: #467361;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 17px;
+}
+
+

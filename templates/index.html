@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Tranzit{% endblock %}
+{% block body_class %}home-bg{% endblock %}
+
+{% block content %}
+<div class="biglietto-container">
+    <div class="biglietto-header">
+        <h1 style="margin-bottom: 2px;">Tranzit</h1>
+        <h2 style="margin-top: 2px;">Acquista ora</h2>
+    </div>
+    <form action="/add_prenotazioni" method="post">
+        <div class="form-item">
+            <label for="partenza" class="label-viaggio">Da:</label>
+            <input list="partenza-list" type="text" id="partenza" name="partenza" required placeholder="Inserisci partenza" autocomplete="off">
+            <datalist id="partenza-list"></datalist>
+        </div>
+        <div class="form-item">
+            <label for="destinazione" class="label-viaggio">A:</label>
+            <input type="text" list="destinazione-list" id="destinazione" name="destinazione" required placeholder="Inserisci destinazione" autocomplete="off">
+            <datalist id="destinazione-list"></datalist>
+        </div>
+        <div class="form-item">
+            <label for="dataViaggio" class="label-viaggio">Data:</label>
+            <input type="date" id="dataViaggio" name="dataViaggio" min="{{ today }}" required>
+        </div>
+        <button type="submit" id="cercaBiglietto">Cerca</button>
+    </form>
+</div>
+{% endblock %}

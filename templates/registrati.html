@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Registrati - Tranzit{% endblock %}
+{% block body_class %}registrati-bg{% endblock %}
+
+{% block content %}
+
+<div class="registrati-container">
+    <h1 style="margin: 10px;">Registrati ora</h1>
+    <form action="/add_utenti" method="post">
+        <div class="username-container">
+            <label for="username" class="label-registrati">Username</label>
+            <input type="text" id="username" name="username" placeholder="Username" required>
+        </div>
+        <div class="email-container">
+            <label for="email" class="label-registrati">Email</label>
+            <input type="email" name="email" id="email" required placeholder="example@email.com">
+        </div>
+        <div class="password-container">
+            <label for="password" class="label-registrati">Password</label>
+            <input type="password" name="password" id="password" required placeholder="Password">
+        </div>
+        <button type="submit" id="registratiBtn">Registrati</button>
+    </form>
+
+</div>
+{% endblock %}

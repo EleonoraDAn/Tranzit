@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<div class="schedule-container">
+    <p style="color: darkred">{{ codTreno }}</p>
+    <div class="schedule-body">
+        {% for fermata in schedule %}
+        <div class="schedule-row">
+            <div class="schedule-data" style="color: darkgreen">{{ fermata.nome_fermata }}</div>
+            <div class="schedule-data">Arrivo programmato {{ fermata.orario_arrivo }}</div>
+            <div class="schedule-data">Partenza programmata {{ fermata.orario_partenza }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

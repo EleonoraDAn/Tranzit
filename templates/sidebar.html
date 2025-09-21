@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="main-info">
+    <aside class="profiloUtente-container">
+        <ul>
+            <li><a href="/account">Account</a></li>
+            <li><a href="#">I miei viaggi</a></li>
+            <li><a href="#">I miei metodi di pagamento</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </aside>
+</div>
+<div class="main-content">
+    {% block main_content %}{% endblock %}
+</div>
+{% endblock %}

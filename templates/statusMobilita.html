@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<div class="box-codTreno">
+    <form action="/getStatusTreno" method="post">
+        <label class="label-viaggio" for="codiceTreno">Inserisci codice del treno</label>
+        <input type="text" name="codiceTreno" id="codiceTreno">
+        <button type="submit" id="inserisciCodTreno">Controlla</button>
+    </form>
+</div>
+{% endblock %}
