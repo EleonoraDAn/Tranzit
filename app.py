@@ -22,6 +22,7 @@ stops_eav_collection= db["stops_eav"]
 agency_eav_collection = db["agency_eav"]
 calendar_dates_eav_collection = db["calendar_dates_eav"]
 shapes_eav_collection = db["shapes_eav"]
+biglietti_acq_collection = db['biglietti_acquistati']
 
 @app.route("/")
 def index():
@@ -65,7 +66,12 @@ def my_payments():
 
 @app.route("/mieiViaggi")
 def my_trips():
-    return render_template("mieiViaggi.html", username=session.get('username'))
+    if 'username' not in session:
+        flash("Devi accedere per visualizzare i tuoi viaggi!", "warning")
+        return redirect("/accedi")
+    username_corrente = session['username']
+    user_biglietti = list(biglietti_acq_collection.find({"username": username_corrente}).sort("data_viaggio", 1))
+    return render_template("mieiViaggi.html", biglietti=user_biglietti, username=username_corrente)
 
 def get_stop_id_by_name(stop_name):
     stop_eav = stops_eav_collection.find_one({"stop_name": stop_name})
@@ -87,6 +93,10 @@ def add_prenotazioni():
         date_gtfs = date_obj.strftime("%Y%m%d")
     except ValueError:
         return "Formato data non valido", 400
+
+    today_date_str = date.today().strftime("%Y-%m-%d")
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
 
     from_id = get_stop_id_by_name(from_name)
     to_id = get_stop_id_by_name(to_name)
@@ -141,14 +151,23 @@ def add_prenotazioni():
                 display_name = trip.get("route_short_name", trip_id)
 
         if is_service_active:
+            from_stop_departure_time = stops_seq[from_id].get("departure_time")
+            if trip_date == today_date_str and from_stop_departure_time:
+                if from_stop_departure_time < current_time:
+                    continue
+
             results.append({
                 "trip_short_name": int(display_name),
                 "agency_id": agency_long_name,
                 "from_stop": from_name,
                 "to_stop": to_name,
                 "arrival_time": stops_seq[from_id].get("arrival_time", stops_seq[from_id].get("departure_time", "")),
-                "departure_time": stops_seq[to_id]["departure_time"]
+                "departure_time": stops_seq[to_id]["departure_time"],
+                "departure_from_origin_time": from_stop_departure_time
             })
+
+    if results:
+        results.sort(key=lambda x: x["departure_from_origin_time"])
 
     return render_template("treniTrovati.html", tickets=results, from_stop=from_name, to_stop=to_name, date=trip_date, username=session.get('username'))
 
@@ -257,7 +276,91 @@ def suggest_stops():
     suggestions = [stop["stop_name"] for stop in matching_stops]
     return jsonify(suggestions)
 
+@app.route("/acquista_biglietto", methods=['POST'])
+def acquista_biglietto():
+    if 'username' not in session:
+        flash("Devi accedere per poter acquistare i biglietti!", "danger")
+        return redirect("/accedi")
+    data = request.form
+    trip_short_name = data.get('trip_short_name')
+    trip_date = data.get('date')
+    agency_id = data.get('agency_id')
+    from_stop = data.get('from_stop')
+    to_stop = data.get('to_stop')
+    arrival_time = data.get('arrival_time')
+    departure_time = data.get('departure_time')
 
+    if not all([trip_short_name, trip_date, agency_id, from_stop, to_stop, arrival_time, departure_time]):
+        flash(f"Errore: dati incompleti.", "danger")
+        return redirect("/")
+
+    nuovo_biglietto = {
+        "username": session['username'],
+        "codice_treno": trip_short_name,
+        "data_viaggio": trip_date,
+        "agency_id": agency_id,
+        "from_stop": from_stop,
+        "to_stop": to_stop,
+        "arrival_time": arrival_time,
+        "departure_time": departure_time
+    }
+
+    try:
+        biglietti_acq_collection.insert_one(nuovo_biglietto)
+        flash("Biglietto acquistato con successo!", "success")
+
+    except Exception as e:
+        flash("Errore durante l'acquisto: {e}", "danger")
+
+    return redirect("/mieiViaggi")
+
+@app.route("/account/update", methods=['POST'])
+def modify_info():
+    old_username = session.get('username')
+    if not old_username:
+        flash("Devi accedere per poter modificare le informazioni del tuo profilo!", "danger")
+        return redirect("/accedi")
+
+    new_username = request.form.get('username')
+    new_email = request.form.get('emailDaMod')
+    new_password = request.form.get('password')
+
+    update_fields = {}
+    if new_username and new_username.strip():
+        new_username_stripped = new_username.strip()
+        if new_username_stripped!=old_username and utenti_collection.find_one({"username": new_username_stripped}):
+            flash(f"Lo username {new_username_stripped} è già in uso.", "danger")
+            return redirect("/account")
+        update_fields['username'] = new_username_stripped
+
+        if new_password and new_password.strip():
+            hashed_password = generate_password_hash(new_password.strip(), method='pbkdf2:sha256')
+            update_fields['password'] = hashed_password
+
+        if new_email and new_email.strip():
+            new_email_stripped = new_email.strip()
+            existing_email_user = utenti_collection.find_one({"email": new_username_stripped})
+            if existing_email_user and existing_email_user['username'] != old_username:
+                flash(f"{new_email_stripped} già in uso.", "danger")
+                return redirect("/account")
+        update_fields['email'] = new_email_stripped
+
+        if update_fields:
+            filter_query = {"username": old_username}
+            update_operation = {"$set": update_fields}
+            result = utenti_collection.update_one(filter_query, update_operation)
+
+            if result.matched_count == 0:
+                flash("Errore: impossibile trovare l'utente nel database", "danger")
+            elif result.matched_count > 0:
+                if 'username' in update_fields:
+                    session['username'] = update_fields['username']
+                    flash("Informazioni aggiornate con successo!", "success")
+                else:
+                    flash("Nessun cambiamento rilevato", "info")
+            else:
+                flash("Nessun campo valido fornito per un aggiornamento", "warning")
+    return redirect("/account")
 
 if __name__ == "__main__":
     app.run(debug=True)
