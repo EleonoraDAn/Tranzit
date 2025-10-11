@@ -1,9 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %}{% endblock %}
+{% block title %}I Miei Viaggi{% endblock %}
 
-{% block content %}
-<div class="tickets-container">
+{% block sidebar %}
+<div class="profiloUtente-container">
+    <ul>
+        <li><a href="/account">Account</a></li>
+        <li><a href="/mieiViaggi">I miei viaggi</a></li>
+        <li><a id="logout_button" href="/logout">Logout</a></li>
+    </ul>
+</div>
+{% endblock %}
+
+
+{% block right_sidebar %}
+<div class="biglietti-acq-container">
     {% for biglietto in biglietti %}
     <div class="ticket-card">
         <div class="ticket-header">
@@ -15,10 +26,13 @@
                     <p class="partenza">{{ biglietto.arrival_time }}<br>{{ biglietto.from_stop }}</p>
                     <p class="destinazione">{{ biglietto.departure_time }}<br>{{ biglietto.to_stop }}</p>
                 </div>
-
             </div>
         </div>
     </div>
     {% endfor %}
 </div>
+{% endblock %}
+
+
+{% block content %}
 {% endblock %}

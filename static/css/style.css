@@ -2,7 +2,52 @@ body, html {
     margin: 0;
     padding: 0;
     height: 100%;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+main {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-top: 60px;
+}
+.profiloUtente-container {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    padding: 20px;
+    margin-right: 20px;
+    position: relative;
+    margin-top: 0;
+}
+
+.biglietti-acq-container {
+    width: 350px;
+    height: calc(100vh - 100px);
+    overflow-y: auto;
+    padding: 20px;
+    position: fixed;
+    right: 120px;
+    top: 80px;
+    z-index: 5;
+}
+.content-area {
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+div.chiSiamo {
+    text-align: left;
+    width: 50%;
+    max-width: 600px;
+    margin: 40px auto;
+    background-color: white;
+    padding: 10px 10px 10px 10px;
+    border-radius: 15px;
 }
 .background-container {
     background-image: url("/static/img/background-img.png");
@@ -16,12 +61,6 @@ body, html {
     top: 0;
     left: 0;
     z-index: -1;
-}
-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
 }
 
 .navbar-container {
@@ -86,23 +125,12 @@ main {
     color: black;
 }
 
-div.chiSiamo{
-    text-align: left;
-    width: 50%;
-    padding: 20px;
-    position: absolute;
-    margin: 0 auto;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
 h1.chiSiamo {
     font-family: Impact, Charcoal, sans-serif;
     font-size: 20px;
     letter-spacing: 0px;
     word-spacing: 3px;
-    color: black;
+    color: #467361;
     font-weight: 400;
     text-decoration: none;
     font-style: normal;
@@ -115,7 +143,7 @@ h2.chiSiamo {
     font-size: 18px;
     letter-spacing: 0px;
     word-spacing: 3px;
-    color: black;
+    color: #467361;
     font-weight: 400;
     text-decoration: none;
     font-style: italic;
@@ -129,7 +157,7 @@ p.chiSiamo {
     font-size: 16px;
     letter-spacing: 0px;
     word-spacing: 0.8px;
-    color: black;
+    color: #467361;
     font-weight: 400;
     text-decoration: none;
     font-style: normal;
@@ -567,4 +595,31 @@ input[type="date"] {
     font-size: 17px;
 }
 
+#logout_button {
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    color: black;
+    background-color: red;
+    border-radius: 15px;
+    padding: 5px 10px 5px 10px;
+    cursor: pointer;
+    display: inline-block;
+}
+#logout_button:hover {
+    background-color: darkred;
+}
 
+#salva_btn {
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    color: black;
+    background-color: red;
+    border: none;
+    padding: 0 20px 0 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    display: inline-block;
+}
+#salva_btn:hover {
+    background-color: darkred;
+}

@@ -37,8 +37,13 @@
     </div>
     {% endif %}
     {% endwith %}
+    {% block sidebar %}{% endblock %}
 
-    {% block content %}{% endblock %}
+    <div class="content-area">
+        {% block content %}{% endblock %}
+    </div>
+
+    {% block right_sidebar %}{% endblock %}
 </main>
 <script src="/static/js/script.js"></script>
 </body>
