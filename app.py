@@ -354,6 +354,10 @@ def modify_info():
                 flash("Errore: impossibile trovare l'utente nel database", "danger")
             elif result.matched_count > 0:
                 if 'username' in update_fields:
+                    biglietti_acq_collection.update_many(
+                        {"username": old_username},
+                        {"$set": {"username": new_username}}
+                    )
                     session['username'] = update_fields['username']
                     flash("Informazioni aggiornate con successo!", "success")
                 else:
