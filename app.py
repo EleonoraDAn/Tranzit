@@ -60,10 +60,6 @@ def status_mobilita():
 def risultati_cod_treno():
     return render_template("risultatiCodTreno.html", username=session.get('username'))
 
-@app.route("/mieiPagamenti")
-def my_payments():
-    return render_template("mieiPagamenti.html", username=session.get('username'))
-
 @app.route("/mieiViaggi")
 def my_trips():
     if 'username' not in session:
