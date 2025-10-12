@@ -1,20 +1,24 @@
-
-from flask import Flask, render_template, request, redirect, session, flash, url_for, jsonify
+from flask import render_template, request, redirect, session, flash, url_for, jsonify
 from pymongo import MongoClient
 from flask import Flask
 from datetime import datetime, date
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
+# creazione dell'istanza dell'applicazione Flask
 app = Flask(__name__)
 
+# configurazione della chiave segreta per la gestione delle sessioni e dei messaggi Flash
+# Viene usata la variabile d'ambiente 'FLASK_SECRET_KEY'
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', os.urandom(24))
 
+# configurazione del database (si usa MongoDB Atlas)
 MONGO_URI = "mongodb+srv://Tranzit:fluEqkVVOzm3EGUK@cluster0.7dmohmv.mongodb.net/"
+# configurazione per la connessione
 client = MongoClient(MONGO_URI)
-db = client["Tranzit"]
+db = client["Tranzit"] # seleziona il db da utilizzare
 utenti_collection = db["utenti"]
-# Collections relative ai treni e i bus di "Eav"
+# Collections relative ai treni e ai bus di "Eav"
 routes_eav_collection = db["routes_eav"]
 trips_eav_collection = db["trips_eav"]
 stop_times_eav_collection = db["stop_times_eav"]
@@ -22,29 +26,35 @@ stops_eav_collection= db["stops_eav"]
 agency_eav_collection = db["agency_eav"]
 calendar_dates_eav_collection = db["calendar_dates_eav"]
 shapes_eav_collection = db["shapes_eav"]
+# collection relativi ai biglietti acquistati dall'utente (visibili in "mieiViaggi")
 biglietti_acq_collection = db['biglietti_acquistati']
 
+# +++ ROUTE DELL'APPLICAZIONE +++
+# 1. Home
 @app.route("/")
 def index():
     today = date.today().strftime("%Y-%m-%d")
     return render_template("index.html", today=today, username=session.get('username'))
 
+# 2. Chi Siamo
 @app.route("/chiSiamo")
 def chi_siamo():
     return render_template("chiSiamo.html", username=session.get('username'))
 
+# 3. Accedi
 @app.route("/accedi")
 def accedi():
     if 'username' in session:
         return redirect(url_for('account'))
-
     return render_template("accedi.html", username=session.get('username'))
 
+# 4. Account
 @app.route("/account")
 def account():
     logged_in_user = utenti_collection.find_one({"username": session['username']})
     return render_template("account.html", user=logged_in_user, username=session.get('username'))
 
+# 5. Registrati
 @app.route("/registrati")
 def registrati():
     if 'username' in session:
@@ -52,14 +62,17 @@ def registrati():
         return redirect(url_for('account'))
     return render_template("registrati.html", username=session.get('username'))
 
+# 6. Status Mobilità
 @app.route("/statusMobilita")
 def status_mobilita():
     return render_template("statusMobilita.html", username=session.get('username'))
 
+# 7. Risultati (il titolo della pagina html è il codice del treno inserito dall'utente)
 @app.route("/risultatiCodTreno")
 def risultati_cod_treno():
     return render_template("risultatiCodTreno.html", username=session.get('username'))
 
+# 8. Miei viaggi
 @app.route("/mieiViaggi")
 def my_trips():
     if 'username' not in session:
@@ -69,12 +82,19 @@ def my_trips():
     user_biglietti = list(biglietti_acq_collection.find({"username": username_corrente}).sort("data_viaggio", 1))
     return render_template("mieiViaggi.html", biglietti=user_biglietti, username=username_corrente)
 
+# Funzione per restituire il codice delle stazioni ("stop_id" da "stop_name")
 def get_stop_id_by_name(stop_name):
     stop_eav = stops_eav_collection.find_one({"stop_name": stop_name})
     if stop_eav:
         return stop_eav["stop_id"]
     return None
 
+# Azione richiamata dal bottone "Cerca" nella "Home"
+"""Cercano i biglietti con: 
+- data scelta dall'utente;
+- stazioni di partenza e di destinazione scelta dall'utente. 
+I biglietti risultato hanno un orario di partenza successivo a quello di sistema. I risultati sono ordinati per orario di partenza.
+"""
 @app.route("/add_prenotazioni", methods=["GET", "POST"])
 def add_prenotazioni():
     from_name = request.form.get("partenza")
@@ -167,6 +187,7 @@ def add_prenotazioni():
 
     return render_template("treniTrovati.html", tickets=results, from_stop=from_name, to_stop=to_name, date=trip_date, username=session.get('username'))
 
+# Azione richiamata quando si clicca il bottone "Accedi" nella pagina "Accedi"
 @app.route("/accedi_utenti", methods=["POST"])
 def accedi_utenti():
     username = request.form.get("username").strip()
@@ -187,6 +208,7 @@ def accedi_utenti():
         flash("Per favore, inserisci username e password", "warning")
         return redirect("/accedi")
 
+# Azione richiamata cliccando il bottone "Registrati" della pagina "Registrati"
 @app.route("/add_utenti", methods=["POST"])
 def add_utenti():
     username = request.form.get("username").strip()
@@ -210,21 +232,22 @@ def add_utenti():
     flash("Registrazione completata con successo! Ora puoi effettuare l'accesso", "success")
     return redirect("/accedi")
 
+# Azione richiamata cliccando il bottone "Controlla" della pagina "Status Mobilità"
 @app.route("/getStatusTreno", methods=["POST"])
 def get_status_treno():
-    codTreno = request.form.get("codiceTreno")
-    if not codTreno:
+    cod_treno = request.form.get("codiceTreno")
+    if not cod_treno:
         return "Errore: inserisci il codice del treno", 400
-    codTreno = codTreno.strip()
+    cod_treno = cod_treno.strip()
     try:
-        codTreno = int(codTreno)
+        cod_treno = int(cod_treno)
     except ValueError:
-        return f"Errore: Il codice '{codTreno}' non è un numero valido.", 400
+        return f"Errore: Il codice '{cod_treno}' non è un numero valido.", 400
 
 
-    trip = trips_eav_collection.find_one({"trip_short_name": codTreno}, {"trip_id": 1, "_id": 0})
+    trip = trips_eav_collection.find_one({"trip_short_name": cod_treno}, {"trip_id": 1, "_id": 0})
     if not trip:
-        return f"Errore: Codice treno '{codTreno}' non trovato", 404
+        return f"Errore: Codice treno '{cod_treno}' non trovato", 404
 
     trip_id = trip["trip_id"]
 
@@ -234,7 +257,7 @@ def get_status_treno():
     ).sort("stop_sequence"))
 
     if not stop_times_for_trip:
-        return f"Nessun orario trovato per il treno '{codTreno}'", 404
+        return f"Nessun orario trovato per il treno '{cod_treno}'", 404
 
     stop_ids = [st['stop_id'] for st in stop_times_for_trip]
     stops_data = list(stops_eav_collection.find({"stop_id": {"$in": stop_ids}}, {"stop_id": 1, "stop_name": 1, "_id": 0}))
@@ -252,14 +275,16 @@ def get_status_treno():
             "orario_partenza": st.get("departure_time", "N/A")
         })
 
-    return render_template("risultatiCodTreno.html", schedule=train_schedule, codTreno=codTreno, username=session.get('username'))
+    return render_template("risultatiCodTreno.html", schedule=train_schedule, codTreno=cod_treno, username=session.get('username'))
 
+# Azione richiamata quando si clicca "Logout" nella sidebar della pagina "Account"
 @app.route("/logout")
 def logout():
     session.pop('username', None)
     flash("Logout effettuato con successo.", "info")
     return redirect("/")
 
+# Viene usata per la lista di stazioni di partenza e di destinazione che compare quando scriviamo nel form della pagina "Home"
 @app.route("/api/suggest_stops")
 def suggest_stops():
     query = request.args.get("q", "")
@@ -272,6 +297,7 @@ def suggest_stops():
     suggestions = [stop["stop_name"] for stop in matching_stops]
     return jsonify(suggestions)
 
+# Azione richiamata dal form della pagina "treniTrovati"
 @app.route("/acquista_biglietto", methods=['POST'])
 def acquista_biglietto():
     if 'username' not in session:
@@ -310,6 +336,7 @@ def acquista_biglietto():
 
     return redirect("/mieiViaggi")
 
+# Azione richiamata cliccando il bottone "Salva" della pagina "Account" per modificare le informazioni dell'account dell'utente
 @app.route("/account/update", methods=['POST'])
 def modify_info():
     old_username = session.get('username')
