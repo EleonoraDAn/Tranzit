@@ -1,4 +1,73 @@
 # Tranzit
+
+# --- IN INGLESE ---
+
+# Web Tecnologies Project 
+**University of Naples "Parthenope"**<br>
+**Degree Course in Computer Science**<br>
+**Academic Year: 2025/2026**
+
+# Group Members 
+- D'Aniello Eleonora, MAT: **0124002790**
+- Alessi Lucia, MAT: **0124002496**
+- Incoronato Mattia, MAT: **0124002664**
+
+# 1. Introduction
+It is a full-stack web application designed for the **search and consultation of train and bus tickets.**<br>
+The goal is to create a platform that is intuitive and simple, but above all, responsive and dynamic!
+
+# 2. System Architecture
+The application follows a **three-tier** architecture:<br>
+**Tranzit**: is a full-stack application developed with:
+- **BACKEND**: implemented in Python using the "Flask" framework, which manages routes, application logic, and communication with the database;
+- **DATABASE**: based on MongoDB Atlas, used to store information related to: routes, purchased tickets, and registered users;
+- **FRONTEND**: built with HTML, CSS3, and Javascript, with dynamic templating Jinja 2 for page generation.
+
+# 3. Tecnologies and Tools used
+| Layer               | Tecnologies / Tools            |
+|---------------------|--------------------------------|
+| **Frontend**        | HTML, CSS3, Javascript, Jinja2 |
+| **Backend**         | Python, Flask                  |
+| **Database**        | MongoDB Atlas                  |
+| **Version Control** | Github, Git                    |
+| **Other**           | JSON, REST API                 |
+
+# 4. Project Structure
+Tranzit/<br>
+|<br>
+|-- app.py (Flask application entry point)<br>
+|-- templates/ (HTML, Jinja 2 templates)<br>
+|-- static/ (contains CSS3 files, javascript files, and the application's background image)<br>
+
+# 5. Implemented Features 
+- Search for train and bus routes;
+- Search for a train/bus route by entering the journey code;
+- Search for tickets by filtering by departure date and time, considering a departure and destination location (all information entered by the user via HTML form);
+- If the travel date is the current date, tickets are searched with a time **EQUAL TO** or **LATER THAN** the one registered by the system;
+- Consultation of notices related to railway lines and bus routes by checking the circulation websites offered by "EAV". <br>
+**Railway Lines**: https://www.eavsrl.it/infomobilita-ferrovia/ <br>
+**Bus Routes**: https://www.eavsrl.it/avvisi-infomobilita-autolinee/ <br>
+- Registration/login system that allows viewing already booked tickets (in the "Miei Viaggi" section visible **ONLY** if logged in);
+- Modification of access information (email, password, and username) via a sidebar visible **ONLY** to registered users;
+- When selecting departure and destination locations, dropdown menus are shown with all stations registered in the database that start with the letters entered by the user.<br>
+These options are selectable.
+
+# 6. Data Sources (Open Data)
+The project relies on publicly available data through **open data** platforms. These resources allow access to updated and structured information on public transport, in compliance with the principles of transparency and data reuse. <br>
+The main sources used are:
+- **Campania Region Open Dats Portal** -- information on local public transport lines, stops, and schedules;
+- **GTFS (General Transit Feed Specification)** -- open standard for representing transit data (schedules, routes, stops).
+The datasets were downloaded, cleaned, and imported into the **MongoDB Atlas** database to allow user-side search and consultation.
+
+# 7. Application Screenshot
+Below is a preview of the main interface of Tranzit:
+![Screenshot homepage](static/img/screenshot_homepage.png)
+
+# 8. Demo video 
+A video demo is available at this link for an overview of the application's usage:
+https://youtu.be/DrKreUUARDw
+
+# --- IN ITALIANO ---
 # Web Tecnologies Project
 **Università degli studi di Napoli "Parthenope"**<br>
 **Corso di Laurea in Informatica**<br>
