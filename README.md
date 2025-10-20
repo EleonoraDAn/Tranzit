@@ -5,7 +5,7 @@
 # Web Tecnologies Project 
 **University of Naples "Parthenope"**<br>
 **Degree Course in Computer Science**<br>
-**Academic Year: 2025/2026**
+**Academic Year: 2024/2025**
 
 # Group Members 
 - D'Aniello Eleonora, MAT: **0124002790**
@@ -71,7 +71,7 @@ https://youtu.be/DrKreUUARDw
 # Web Tecnologies Project
 **Università degli studi di Napoli "Parthenope"**<br>
 **Corso di Laurea in Informatica**<br>
-**Anno accademico: 2025/2026**
+**Anno accademico: 2024/2025**
 
 ## Membri del gruppo
 - D'Aniello Eleonora, MAT: **0124002790**
